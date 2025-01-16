@@ -3,7 +3,7 @@ package com.aida.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.antlr.v4.runtime.misc.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Getter
