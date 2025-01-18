@@ -7,7 +7,6 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Properties;
 
 @Entity
 @Getter
@@ -32,11 +31,9 @@ public class Review {
 
     @JsonIgnore
     @ManyToOne
-    @Column(nullable = false)
     private Product product;
 
     @ManyToOne
-    @Column(nullable = false)
     private User user;
 
     @Column(nullable = false)
