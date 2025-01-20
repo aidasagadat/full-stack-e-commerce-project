@@ -1,8 +1,11 @@
 package com.aida.controller;
 
+import com.aida.domain.USER_ROLE;
 import com.aida.model.User;
 import com.aida.repository.UserRepository;
+import com.aida.response.AuthResponse;
 import com.aida.response.SignupRequest;
+import com.aida.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,21 +18,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AuthController {
 
     private final UserRepository userRepository;
+    private final AuthService authService;
 
     @Autowired
-    public AuthController(UserRepository userRepository) {
+    public AuthController(UserRepository userRepository, AuthService authService) {
         this.userRepository = userRepository;
+        this.authService = authService;
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> createUserHandler(@RequestBody SignupRequest req){
-        User user = new User();
-        user.setEmail(req.getEmail());
-        user.setFullName(req.getFullName());
+    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody SignupRequest req){
 
-        User savedUser = userRepository.save(user);
+        String jwt =authService.createUser(req);
+        AuthResponse res = new AuthResponse();
+        res.setJwt(jwt);
+        res.setMessage("register success");
+        res.setRole(USER_ROLE.ROLE_CUSTOMER);
 
-        return ResponseEntity.ok(savedUser);
+        return ResponseEntity.ok(res);
     }
 }
 
