@@ -1,4 +1,9 @@
 package com.aida.service;
 
-public class AuthService {
+import com.aida.response.SignupRequest;
+
+public interface AuthService {
+
+    String createUser(SignupRequest req);
+
 }
