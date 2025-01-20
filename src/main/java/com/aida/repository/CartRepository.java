@@ -1,0 +1,7 @@
+package com.aida.repository;
+
+import com.aida.model.Cart;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CartRepository extends JpaRepository<Cart, Long> {
+}
