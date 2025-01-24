@@ -2,7 +2,10 @@ package com.aida.controller;
 
 import com.aida.domain.USER_ROLE;
 import com.aida.model.User;
+import com.aida.model.VerificationCode;
 import com.aida.repository.UserRepository;
+import com.aida.request.LoginRequest;
+import com.aida.response.ApiResponse;
 import com.aida.response.AuthResponse;
 import com.aida.response.SignupRequest;
 import com.aida.service.AuthService;
@@ -27,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody SignupRequest req){
+    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody SignupRequest req) throws Exception {
 
         String jwt =authService.createUser(req);
         AuthResponse res = new AuthResponse();
@@ -37,7 +40,35 @@ public class AuthController {
 
         return ResponseEntity.ok(res);
     }
+
+    @PostMapping("/sent/login-signup-otp")
+    public ResponseEntity<ApiResponse> sendOtpHandler(@RequestBody VerificationCode req) throws Exception {
+
+        authService.sentLoginOtp(req.getEmail());
+        ApiResponse res = new ApiResponse();
+
+   ;
+        res.setMessage("otp sent successfully");
+
+
+        return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("/signing")
+    public ResponseEntity<AuthResponse> loginHandler(@RequestBody LoginRequest req) throws Exception{
+        AuthResponse authResponse = authService.signing(req);
+
+        return ResponseEntity.ok(authResponse);
+
+    }
+
 }
+
+
+
+
+
+
 
 
 
