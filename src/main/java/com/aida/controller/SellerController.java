@@ -7,15 +7,14 @@ import com.aida.response.ApiResponse;
 import com.aida.response.AuthResponse;
 import com.aida.service.AuthService;
 import com.aida.service.SellerService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/sellers")
 public class SellerController {
 
@@ -23,34 +22,22 @@ public class SellerController {
     private final VerificationCodeRepository verificationCodeRepository;
     private final AuthService authService;
 
-
-//    @PostMapping("/sent/login-otp")
-//    public ResponseEntity<ApiResponse> sentOtpHandler(@RequestBody VerificationCode req) throws Exception {
-//        authService.sentLoginOtp(req.getEmail());
-//        ApiResponse res = new ApiResponse();
-//        res.setMessage("otp send successfully");
-//        return ResponseEntity.ok(res);
-//
-//    }
-
-
-
+    @Autowired
+    public SellerController(SellerService sellerService, VerificationCodeRepository verificationCodeRepository, AuthService authService) {
+        this.sellerService = sellerService;
+        this.verificationCodeRepository = verificationCodeRepository;
+        this.authService = authService;
+    }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> loginSeller( @RequestBody LoginRequest req) throws Exception {
+    public ResponseEntity<AuthResponse> loginSeller(@RequestBody LoginRequest req) throws Exception {
 
         String otp = req.getOtp();
         String email = req.getEmail();
 
-        req.setEmail("seller_"+email);
+        req.setEmail("seller_" + email);
         AuthResponse authResponse = authService.signing(req);
 
-
-    return ResponseEntity.ok(authResponse);
-
+        return ResponseEntity.ok(authResponse);
     }
-
-
-
-
 }
