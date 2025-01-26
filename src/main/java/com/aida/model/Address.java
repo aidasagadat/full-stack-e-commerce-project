@@ -28,7 +28,7 @@ public class Address {
 
     private String state;
 
-    private String bincode;
+    private String pinCode;
 
     private String mobile;
 
