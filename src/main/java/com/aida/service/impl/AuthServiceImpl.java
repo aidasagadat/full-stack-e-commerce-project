@@ -3,9 +3,11 @@ package com.aida.service.impl;
 import com.aida.config.JwtProvider;
 import com.aida.domain.USER_ROLE;
 import com.aida.model.Cart;
+import com.aida.model.Seller;
 import com.aida.model.User;
 import com.aida.model.VerificationCode;
 import com.aida.repository.CartRepository;
+import com.aida.repository.SellerRepository;
 import com.aida.repository.UserRepository;
 import com.aida.repository.VerificationCodeRepository;
 import com.aida.request.LoginRequest;
@@ -38,9 +40,10 @@ public class AuthServiceImpl implements AuthService {
     private final VerificationCodeRepository verificationCodeRepository;
     private final EmailService emailService;
     private final CustomUserServiceImpl customUserService;
+    private final SellerRepository sellerRepository;
 
     public AuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
-                           CartRepository cartRepository, JwtProvider jwtProvider, VerificationCodeRepository verificationCodeRepository, EmailService emailService, CustomUserServiceImpl customUserService) {
+                           CartRepository cartRepository, JwtProvider jwtProvider, VerificationCodeRepository verificationCodeRepository, EmailService emailService, CustomUserServiceImpl customUserService, SellerRepository sellerRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.cartRepository = cartRepository;
@@ -48,18 +51,33 @@ public class AuthServiceImpl implements AuthService {
         this.verificationCodeRepository = verificationCodeRepository;
         this.emailService = emailService;
         this.customUserService = customUserService;
+        this.sellerRepository = sellerRepository;
     }
 
     @Override
-    public void sentLoginOtp(String email) throws Exception {
+    public void sentLoginOtp(String email, USER_ROLE role) throws Exception {
         String SIGNING_PREFIX = "signing_";
 
         if(email.startsWith(SIGNING_PREFIX)){
             email=email.substring(SIGNING_PREFIX.length());
-            User user = userRepository.findByEmail(email);
-            if(user==null){
-                throw new Exception("user doesn't exist");
+
+            if(role.equals(USER_ROLE.ROLE_SELLER)){
+                Seller seller = sellerRepository.findByEmail(email);
+                if(seller==null){
+                    throw new Exception("seller not found");
+                }
+
             }
+
+            else {
+                User user = userRepository.findByEmail(email);
+                if(user==null){
+                    throw new Exception("user doesn't exist");
+                }
+
+            }
+
+
         }
         VerificationCode isExist = verificationCodeRepository.findByEmail(email);
         if (isExist != null){
