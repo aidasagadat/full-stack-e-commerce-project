@@ -4,6 +4,7 @@ import com.aida.domain.USER_ROLE;
 import com.aida.model.User;
 import com.aida.model.VerificationCode;
 import com.aida.repository.UserRepository;
+import com.aida.request.LoginOtpRequest;
 import com.aida.request.LoginRequest;
 import com.aida.response.ApiResponse;
 import com.aida.response.AuthResponse;
@@ -42,9 +43,9 @@ public class AuthController {
     }
 
     @PostMapping("/sent/login-signup-otp")
-    public ResponseEntity<ApiResponse> sendOtpHandler(@RequestBody VerificationCode req) throws Exception {
+    public ResponseEntity<ApiResponse> sendOtpHandler(@RequestBody LoginOtpRequest req) throws Exception {
 
-        authService.sentLoginOtp(req.getEmail());
+        authService.sentLoginOtp(req.getEmail(), req.getRole());
         ApiResponse res = new ApiResponse();
 
    ;
