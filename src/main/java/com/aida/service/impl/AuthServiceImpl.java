@@ -136,7 +136,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AuthResponse signing(LoginRequest req) {
+    public AuthResponse signing(LoginRequest req) throws Exception {
         String username = req.getEmail();
         String otp = req.getOtp();
 
@@ -157,8 +157,15 @@ public class AuthServiceImpl implements AuthService {
 
     }
 
-    private Authentication authenticate(String username, String otp) {
+    private Authentication authenticate(String username, String otp) throws Exception {
         UserDetails userDetails = customUserService.loadUserByUsername(username);
+
+        String SELLER_PREFIX = "seller_";
+
+        if (username.startsWith(SELLER_PREFIX)) {
+            username = username.substring((SELLER_PREFIX.length()));
+        }
+
         if(userDetails == null){
             throw new BadCredentialsException("invalid username or password");
         }
@@ -166,7 +173,7 @@ public class AuthServiceImpl implements AuthService {
         VerificationCode verificationCode = verificationCodeRepository.findByEmail(username);
 
         if(verificationCode == null || !verificationCode.getOtp().equals(otp)){
-            throw new BadCredentialsException("wrong otp");
+            throw new Exception("wrong otp");
         }
 
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
