@@ -3,6 +3,7 @@ package com.aida.service.impl;
 import com.aida.config.JwtProvider;
 import com.aida.domain.AccountStatus;
 import com.aida.domain.USER_ROLE;
+import com.aida.exception.SellerException;
 import com.aida.model.Address;
 import com.aida.model.Seller;
 import com.aida.repository.AddressRepository;
@@ -59,8 +60,8 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public Seller getSellerById(Long id) throws Exception {
-        return sellerRepository.findById(id).orElseThrow(() -> new Exception("seller not found with given id"));
+    public Seller getSellerById(Long id) throws SellerException {
+        return sellerRepository.findById(id).orElseThrow(() -> new SellerException("seller not found with given id"));
     }
 
     @Override
