@@ -48,7 +48,6 @@ public class AuthController {
         authService.sentLoginOtp(req.getEmail(), req.getRole());
         ApiResponse res = new ApiResponse();
 
-   ;
         res.setMessage("otp sent successfully");
 
 
