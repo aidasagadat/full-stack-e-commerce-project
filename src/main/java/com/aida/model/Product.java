@@ -19,15 +19,19 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String title;
+
     private int mrpPrice;
 
     private int sellingPrice;
 
-    private int discountPersent;
+    private int discountPercent;
 
     private int quantity;
 
     private String color;
+
+    private String description;
 
     @ElementCollection
     private List<String> images = new ArrayList<>();
