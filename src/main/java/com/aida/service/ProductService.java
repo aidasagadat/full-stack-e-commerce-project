@@ -1,5 +1,6 @@
 package com.aida.service;
 
+import com.aida.exception.ProductException;
 import com.aida.model.Product;
 import com.aida.model.Seller;
 import com.aida.request.CreateProductRequest;
@@ -10,10 +11,10 @@ import java.util.List;
 public interface ProductService {
 
     public Product createProduct(CreateProductRequest req, Seller seller);
-    public void deleteProduct(Long productId);
-    public Product updateProduct(Long productId, Product product);
-    Product findProductById(Long productId);
-    List<Product> searchProduct();
+    public void deleteProduct(Long productId) throws ProductException;
+    public Product updateProduct(Long productId, Product product) throws ProductException;
+    Product findProductById(Long productId) throws ProductException;
+    List<Product> searchProducts(String query);
     public Page<Product> getAllProducts(
             String category,
             String brand,
