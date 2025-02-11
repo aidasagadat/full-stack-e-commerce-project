@@ -23,11 +23,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+
 public class ProductServiceImpl implements ProductService {
 
-    private ProductRepository productRepository;
-    private CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
+
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {
+        this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
+    }
 
     @Override
     public Product createProduct(CreateProductRequest req, Seller seller) {
@@ -85,6 +90,7 @@ public class ProductServiceImpl implements ProductService {
         }
         double discount = mrpPrice-sellingPrice;
         double discountPercentage =(discount/mrpPrice)*100;
+        System.out.println(discountPercentage);
         return (int)discountPercentage;
     }
 
