@@ -7,6 +7,7 @@ import com.aida.model.Seller;
 import com.aida.request.CreateProductRequest;
 import com.aida.service.ProductService;
 import com.aida.service.SellerService;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,4 +40,23 @@ public class SellerProductController {
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId){
+        try{
+            productService.deleteProduct(productId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (ProductException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/{productId}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Long productId, @RequestBody Product product){
+        try{
+            Product updateProduct = productService.updateProduct(productId, product);
+            return new ResponseEntity<>(updateProduct, HttpStatus.OK);
+        }catch (ProductException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
