@@ -1,4 +1,4 @@
 package com.aida.repository;
 
-public class CartItemRepository {
+public interface CartItemRepository {
 }
