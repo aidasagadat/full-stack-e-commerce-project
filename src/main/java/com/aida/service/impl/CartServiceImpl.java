@@ -4,11 +4,21 @@ import com.aida.model.Cart;
 import com.aida.model.CartItem;
 import com.aida.model.Product;
 import com.aida.model.User;
+import com.aida.repository.CartItemRepository;
+import com.aida.repository.CartRepository;
 import com.aida.service.CartService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CartServiceImpl implements CartService {
+
+    private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
+
+    public CartServiceImpl(CartRepository cartRepository, CartItemRepository cartItemRepository) {
+        this.cartRepository = cartRepository;
+        this.cartItemRepository = cartItemRepository;
+    }
 
     @Override
     public CartItem addCartItem(User user, Product product, String size, int quantity) {
