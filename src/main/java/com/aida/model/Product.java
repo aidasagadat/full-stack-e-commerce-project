@@ -1,18 +1,11 @@
 package com.aida.model;
 
-
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Product {
 
     @Id
@@ -51,10 +44,153 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
+    // Конструкторы
+    public Product() {}
 
+    public Product(Long id, String title, int mrpPrice, int sellingPrice, int discountPercent, int quantity,
+                   String color, String description, List<String> images, int numRatings, Category category,
+                   Seller seller, LocalDateTime createdAt, String sizes, List<Review> reviews) {
+        this.id = id;
+        this.title = title;
+        this.mrpPrice = mrpPrice;
+        this.sellingPrice = sellingPrice;
+        this.discountPercent = discountPercent;
+        this.quantity = quantity;
+        this.color = color;
+        this.description = description;
+        this.images = images;
+        this.numRatings = numRatings;
+        this.category = category;
+        this.seller = seller;
+        this.createdAt = createdAt;
+        this.sizes = sizes;
+        this.reviews = reviews;
+    }
 
+    // Геттеры и Сеттеры
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getMrpPrice() {
+        return mrpPrice;
+    }
+
+    public void setMrpPrice(int mrpPrice) {
+        this.mrpPrice = mrpPrice;
+    }
+
+    public int getSellingPrice() {
+        return sellingPrice;
+    }
+
+    public void setSellingPrice(int sellingPrice) {
+        this.sellingPrice = sellingPrice;
+    }
+
+    public int getDiscountPercent() {
+        return discountPercent;
+    }
+
+    public void setDiscountPercent(int discountPercent) {
+        this.discountPercent = discountPercent;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+
+    public int getNumRatings() {
+        return numRatings;
+    }
+
+    public void setNumRatings(int numRatings) {
+        this.numRatings = numRatings;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Seller getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Seller seller) {
+        this.seller = seller;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getSizes() {
+        return sizes;
+    }
+
+    public void setSizes(String sizes) {
+        this.sizes = sizes;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    // Другие методы, если необходимо
 }
+
 
 
 
