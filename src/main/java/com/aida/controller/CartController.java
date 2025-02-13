@@ -49,14 +49,31 @@ public class CartController {
         Product product = productService.findProductById(req.getProductId());
 
         CartItem item = cartService.addCartItem(user, product, req.getSize(), req.getQuantity());
-
         ApiResponse res = new ApiResponse();
         res.setMessage("Item added to cart");
 
         return new ResponseEntity<>(item, HttpStatus.ACCEPTED);
-
     }
 
+    @DeleteMapping("/delete/{cartItemId}")
+    public ResponseEntity<ApiResponse> deleteItemFromCartHandler(@PathVariable long cartItemId,
+                                                                 @RequestHeader("Authorization") String jwt) throws Exception {
+        User user = userService.findUserByJwtToken(jwt);
+        cartItemService.removeCartItem(user.getId(), cartItemId);
+        ApiResponse res = new ApiResponse();
+        res.setMessage("Item deleted from cart");
+        return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
+    }
 
+    @PutMapping("/update/{cartItemId}")
+    public ResponseEntity<CartItem> updateCartItemHandler(@PathVariable long cartItemId,
+                                                             @RequestHeader("Authorization") String jwt, @RequestBody CartItem cartItem) throws Exception {
+        User user = userService.findUserByJwtToken(jwt);
+        CartItem updatedItem = new CartItem();
+        if(cartItem.getQuantity() > 0){
+            updatedItem = cartItemService.updateCartItem(user.getId(), cartItemId, cartItem);
+        }
+        return new ResponseEntity<>(updatedItem, HttpStatus.ACCEPTED);
+    }
 
 }
