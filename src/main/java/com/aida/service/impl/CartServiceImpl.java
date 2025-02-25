@@ -35,6 +35,7 @@ public class CartServiceImpl implements CartService {
             cartItem.setSellingPrice(totalPrice);
             cart.getCartItems().add(cartItem);
             cartItem.setCart(cart);
+            cartItem.setMrpPrice(quantity*product.getMrpPrice());
 
             return cartItemRepository.save(cartItem);
         }
@@ -67,7 +68,7 @@ public class CartServiceImpl implements CartService {
 
     private int calculateDiscountPercentage(int mrpPrice, int sellingPrice) {
         if(mrpPrice <= 0){
-            throw new IllegalArgumentException("Actual price must be greater than 0");
+            return 0;
         }
         double discount = mrpPrice-sellingPrice;
         double discountPercentage =(discount/mrpPrice)*100;
