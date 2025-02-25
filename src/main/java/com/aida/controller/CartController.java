@@ -55,7 +55,7 @@ public class CartController {
         return new ResponseEntity<>(item, HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/delete/{cartItemId}")
+    @DeleteMapping("/item/{cartItemId}")
     public ResponseEntity<ApiResponse> deleteItemFromCartHandler(@PathVariable long cartItemId,
                                                                  @RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserByJwtToken(jwt);
@@ -65,7 +65,7 @@ public class CartController {
         return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
     }
 
-    @PutMapping("/update/{cartItemId}")
+    @PutMapping("/item/{cartItemId}")
     public ResponseEntity<CartItem> updateCartItemHandler(@PathVariable long cartItemId,
                                                              @RequestHeader("Authorization") String jwt, @RequestBody CartItem cartItem) throws Exception {
         User user = userService.findUserByJwtToken(jwt);
