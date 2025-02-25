@@ -114,27 +114,6 @@ public class CartItem {
         this.userId = userId;
     }
 
-    // Equals method
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CartItem cartItem = (CartItem) o;
-        return quantity == cartItem.quantity &&
-                id.equals(cartItem.id) &&
-                cart.equals(cartItem.cart) &&
-                product.equals(cartItem.product) &&
-                size.equals(cartItem.size) &&
-                mrpPrice.equals(cartItem.mrpPrice) &&
-                sellingPrice.equals(cartItem.sellingPrice) &&
-                userId.equals(cartItem.userId);
-    }
-
-    // HashCode method
-    @Override
-    public int hashCode() {
-        return java.util.Objects.hash(id, cart, product, size, quantity, mrpPrice, sellingPrice, userId);
-    }
 
     // ToString method
     @Override
