@@ -8,10 +8,12 @@ import com.aida.repository.OrderItemRepository;
 import com.aida.repository.OrderRepository;
 import com.aida.service.OrderService;
 import org.aspectj.weaver.ast.Or;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Service
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
