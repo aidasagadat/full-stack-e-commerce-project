@@ -5,12 +5,20 @@ import com.aida.model.Address;
 import com.aida.model.Cart;
 import com.aida.model.Order;
 import com.aida.model.User;
+import com.aida.repository.OrderRepository;
 import com.aida.service.OrderService;
 
 import java.util.List;
 import java.util.Set;
 
 public class OrderServiceImpl implements OrderService {
+
+    private final OrderRepository orderRepository;
+
+    public OrderServiceImpl(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
     @Override
     public Set<Order> createOrder(User user, Address shippingAddress, Cart cart) {
         return Set.of();
