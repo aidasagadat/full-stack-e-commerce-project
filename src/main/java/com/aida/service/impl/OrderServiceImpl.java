@@ -1,22 +1,26 @@
 package com.aida.service.impl;
 
 import com.aida.domain.OrderStatus;
-import com.aida.model.Address;
-import com.aida.model.Cart;
-import com.aida.model.Order;
-import com.aida.model.User;
+import com.aida.domain.PaymentStatus;
+import com.aida.model.*;
+import com.aida.repository.AddressRepository;
+import com.aida.repository.OrderItemRepository;
 import com.aida.repository.OrderRepository;
 import com.aida.service.OrderService;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final AddressRepository addressRepository;
+    private final OrderItemRepository orderItemRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, AddressRepository addressRepository, OrderItemRepository orderItemRepository) {
         this.orderRepository = orderRepository;
+        this.addressRepository = addressRepository;
+        this.orderItemRepository = orderItemRepository;
     }
 
     @Override
