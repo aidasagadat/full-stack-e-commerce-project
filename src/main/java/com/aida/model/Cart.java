@@ -109,17 +109,4 @@ public class Cart {
         this.couponCode = couponCode;
     }
 
-    // Equals and hashCode methods
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Cart cart = (Cart) o;
-        return id != null && id.equals(cart.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
