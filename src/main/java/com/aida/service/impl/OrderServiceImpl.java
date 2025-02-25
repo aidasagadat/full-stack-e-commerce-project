@@ -100,7 +100,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order cancelOrder(Long orderId, User user) {
-        return null;
+    public Order cancelOrder(Long orderId, User user) throws Exception {
+        Order order = findOrderById(orderId);
+        order.setOrderStatus(OrderStatus.CANCELLED);
+        return orderRepository.save(order);
     }
 }
