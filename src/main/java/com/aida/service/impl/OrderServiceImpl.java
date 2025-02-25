@@ -71,15 +71,14 @@ public class OrderServiceImpl implements OrderService {
                 OrderItem savedOrderItem = orderItemRepository.save(orderItem);
                 orderItems.add(savedOrderItem);
             }
-            return orders;
         }
-
-        return Set.of();
+        return orders;
     }
 
     @Override
-    public Order findOrderById(long id) {
-        return null;
+    public Order findOrderById(long id) throws Exception {
+        return orderRepository.findById(id).orElseThrow(() ->
+                new Exception("order not found"));
     }
 
     @Override
