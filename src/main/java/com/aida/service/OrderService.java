@@ -1,10 +1,7 @@
 package com.aida.service;
 
 import com.aida.domain.OrderStatus;
-import com.aida.model.Address;
-import com.aida.model.Cart;
-import com.aida.model.Order;
-import com.aida.model.User;
+import com.aida.model.*;
 
 import java.util.List;
 import java.util.Set;
@@ -16,4 +13,5 @@ public interface OrderService {
     List<Order> sellersOrder(Long sellerId);
     Order updateOrderStatus(Long orderId, OrderStatus orderStatus) throws Exception;
     Order cancelOrder(Long orderId, User user) throws Exception;
+    OrderItem findById(Long id);
 }
