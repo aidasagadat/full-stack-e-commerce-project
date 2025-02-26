@@ -31,4 +31,5 @@ public class SellerOrderController {
         Order order = orderService.updateOrderStatus(orderId, orderStatus);
         return new ResponseEntity<>(order, HttpStatus.ACCEPTED);
     }
+
 }
