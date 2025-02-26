@@ -11,6 +11,7 @@ import com.aida.request.LoginRequest;
 import com.aida.response.AuthResponse;
 import com.aida.service.AuthService;
 import com.aida.service.EmailService;
+import com.aida.service.SellerReportService;
 import com.aida.service.SellerService;
 import com.aida.util.OtpUtil;
 import jakarta.mail.MessagingException;
@@ -31,14 +32,16 @@ public class SellerController {
     private final AuthService authService;
     private final EmailService emailService;
     private final JwtProvider jwtProvider;
+    private final SellerReportService sellerReportService;
 
     @Autowired
-    public SellerController(SellerService sellerService, VerificationCodeRepository verificationCodeRepository, AuthService authService, EmailService emailService, JwtProvider jwtProvider) {
+    public SellerController(SellerService sellerService, VerificationCodeRepository verificationCodeRepository, AuthService authService, EmailService emailService, JwtProvider jwtProvider, SellerReportService sellerReportService) {
         this.sellerService = sellerService;
         this.verificationCodeRepository = verificationCodeRepository;
         this.authService = authService;
         this.emailService = emailService;
         this.jwtProvider = jwtProvider;
+        this.sellerReportService = sellerReportService;
     }
 
     @PostMapping("/login")
@@ -101,15 +104,14 @@ public class SellerController {
 
     }
 
-//    @GetMapping("/report")
-//    public ResponseEntity<SellerReport> getSellerrepost(@RequestHeader("Authorization") String jwt) throws Exception {
-//        String email = jwtProvider.getEmailFromJwtToken(jwt);
-//        Seller seller = sellerService.getSellerByEmail(email);
-//        SellerReport report sellerReportService.getSellerRepost(seller);
-//        return new ResponseEntity<>(report, HttpStatus.OK);
-//
-//    }
-//
+    @GetMapping("/report")
+    public ResponseEntity<SellerReport> getSellerReport(@RequestHeader("Authorization") String jwt) throws Exception {
+        Seller seller = sellerService.getSellerProfile(jwt);
+        SellerReport report = sellerReportService.getSellerReport(seller);
+        return new ResponseEntity<>(report, HttpStatus.OK);
+
+    }
+
 
     @GetMapping
     public ResponseEntity<List<Seller>> getAllSellers(@RequestParam(required = false)AccountStatus status){
@@ -129,8 +131,6 @@ public class SellerController {
         sellerService.deleteSeller(id);
         return ResponseEntity.noContent().build();
     }
-
-
 
 
 
