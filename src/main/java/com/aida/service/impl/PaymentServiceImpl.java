@@ -1,12 +1,17 @@
 package com.aida.service.impl;
 
 import com.aida.domain.PaymentOrderStatus;
+import com.aida.domain.PaymentStatus;
 import com.aida.model.Order;
 import com.aida.model.PaymentOrder;
 import com.aida.model.User;
 import com.aida.repository.OrderRepository;
 import com.aida.repository.PaymentOrderRepository;
 import com.aida.service.PaymentService;
+import com.razorpay.Payment;
+import com.razorpay.PaymentLink;
+import com.razorpay.RazorpayClient;
+import com.razorpay.RazorpayException;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
@@ -22,6 +27,8 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentOrderRepository paymentOrderRepository;
     private final OrderRepository orderRepository;
+    private String apiKey = "apiKey";
+    private String apiSecret = "apiSecret";
     private String stripeSecretKey = "stripeSecretKey";
 
     @Override
@@ -51,10 +58,37 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Boolean ProceedPaymentOrder(PaymentOrder paymentOrder, String paymentId, String paymentLinkId) {
+    public Boolean ProceedPaymentOrder(PaymentOrder paymentOrder, String paymentId, String paymentLinkId) throws RazorpayException {
         if(paymentOrder.getStatus().equals(PaymentOrderStatus.PENDING)){
+            RazorpayClient razorpay = new RazorpayClient(apiKey, apiSecret);
+
+            Payment payment = razorpay.payments.fetch(paymentId);
+
+            String status = payment.get("status");
+
+            if(status.equals("captured")){
+                Set<Order> orders = paymentOrder.getOrders();
+
+                for(Order order : orders){
+                    order.setPaymentStatus(PaymentStatus.COMPLETED);
+                    orderRepository.save(order);
+                }
+                paymentOrder.setStatus(PaymentOrderStatus.SUCCESS);
+                paymentOrderRepository.save(paymentOrder);
+
+                return true;
+            }
+
+            paymentOrder.setStatus(PaymentOrderStatus.FAILED);
+            paymentOrderRepository.save(paymentOrder);
+            return false;
 
         }
+        return false;
+    }
+
+    @Override
+    public PaymentLink createRazorpayPaymentLink(User user, Long amount, Long orderId) {
         return null;
     }
 
