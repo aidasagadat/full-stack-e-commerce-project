@@ -2,10 +2,13 @@ package com.aida.controller;
 
 import com.aida.domain.PaymentMethod;
 import com.aida.model.*;
+import com.aida.repository.PaymentOrderRepository;
 import com.aida.response.PaymentLinkResponse;
 import com.aida.service.CartService;
 import com.aida.service.OrderService;
+import com.aida.service.PaymentService;
 import com.aida.service.UserService;
+import com.razorpay.PaymentLink;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,8 @@ public class OrderController {
     private final OrderService orderService;
     private final UserService userService;
     private final CartService cartService;
+    private final PaymentService paymentService;
+    private final PaymentOrderRepository paymentOrderRepository;
 
     @PostMapping()
     public ResponseEntity<PaymentLinkResponse> createOrderHandler(
@@ -34,8 +39,24 @@ public class OrderController {
         Cart cart = cartService.findUserCart(user);
         Set<Order> orders = orderService.createOrder(user, shippingAddress, cart);
 
+        PaymentOrder paymentOrder = paymentService.createOrder(user, orders);
+
         PaymentLinkResponse res = new PaymentLinkResponse();
 
+        if(paymentMethod.equals(PaymentMethod.RAZORPAY)){
+            PaymentLink payment = paymentService.createRazorpayPaymentLink(user, paymentOrder.getAmount(), paymentOrder.getId());
+            String paymentUrl = payment.get("short_url");
+            String paymentUrlId = payment.get("id");
+
+            res.setPayment_link_url(paymentUrl);
+
+            paymentOrder.setPaymentLinkId(paymentUrlId);
+            paymentOrderRepository.save(paymentOrder);
+        }
+        else {
+            String paymentUrl = paymentService.createStripePaymentLink(user, paymentOrder.getAmount(), paymentOrder.getId());
+            res.setPayment_link_url(paymentUrl);
+        }
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
