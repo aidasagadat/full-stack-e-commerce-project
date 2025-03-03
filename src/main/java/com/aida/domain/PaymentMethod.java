@@ -1,6 +1,6 @@
 package com.aida.domain;
 
 public enum PaymentMethod {
-    RASORPAY,
+    RAZORPAY,
     STRIPE
 }
