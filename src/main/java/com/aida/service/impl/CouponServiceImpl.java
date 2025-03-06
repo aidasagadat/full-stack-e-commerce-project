@@ -8,6 +8,7 @@ import com.aida.repository.CouponRepository;
 import com.aida.repository.UserRepository;
 import com.aida.service.CouponService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -71,8 +72,9 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public Coupon createCoupon(Coupon coupon) {
-        return null;
+        return couponRepository.save(coupon);
     }
 
     @Override
