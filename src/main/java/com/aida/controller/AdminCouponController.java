@@ -3,6 +3,7 @@ package com.aida.controller;
 import com.aida.model.Cart;
 import com.aida.model.Coupon;
 import com.aida.model.User;
+import com.aida.response.ApiResponse;
 import com.aida.service.CartService;
 import com.aida.service.CouponService;
 import com.aida.service.UserService;
@@ -43,6 +44,14 @@ public class AdminCouponController {
     public ResponseEntity<Coupon> createCoupon(@RequestBody Coupon coupon){
         Coupon createdCoupon = couponService.createCoupon(coupon);
         return ResponseEntity.ok(createdCoupon);
+    }
+
+    @DeleteMapping("/admin/delete/{couponId}")
+    public ResponseEntity<ApiResponse> deleteCoupon(@PathVariable Long couponId) throws Exception {
+        couponService.deleteCoupon(couponId);
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setMessage("coupon is deleted");
+        return ResponseEntity.ok(apiResponse);
     }
 
 }
