@@ -34,6 +34,6 @@ public class HomeCategoryServiceImpl implements HomeCategoryService {
 
     @Override
     public List<HomeCategory> getALlHomeCategories() {
-        return List.of();
+        return homeCategoryRepository.findAll();
     }
 }
