@@ -53,8 +53,16 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public Cart removeCoupon(String code, User user) {
-        return null;
+    public Cart removeCoupon(String code, User user) throws Exception {
+        Coupon coupon = couponRepository.findByCode(code);
+        if(coupon == null){
+            throw new Exception("zcoupon not found");
+        }
+        Cart cart = cartRepository.findByUserId(user.getId());
+        double discountedPrice = (cart.getTotalSellingPrice()*coupon.getDiscountPercentage())/100;
+        cart.setTotalSellingPrice(cart.getTotalSellingPrice()+discountedPrice);
+        cart.setCouponCode(null);
+        return cartRepository.save(cart);
     }
 
     @Override
