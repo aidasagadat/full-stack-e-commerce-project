@@ -1,6 +1,7 @@
 package com.aida.controller;
 
 import com.aida.model.Cart;
+import com.aida.model.Coupon;
 import com.aida.model.User;
 import com.aida.service.CartService;
 import com.aida.service.CouponService;
@@ -34,6 +35,14 @@ public class AdminCouponController {
             cart = couponService.removeCoupon(code, user);
         }
         return ResponseEntity.ok(cart);
+    }
+
+    // ADMIN OPERATIONS
+
+    @PostMapping("/admin/create")
+    public ResponseEntity<Coupon> createCoupon(@RequestBody Coupon coupon){
+        Coupon createdCoupon = couponService.createCoupon(coupon);
+        return ResponseEntity.ok(createdCoupon);
     }
 
 }
