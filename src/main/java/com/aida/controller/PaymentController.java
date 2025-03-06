@@ -3,10 +3,7 @@ package com.aida.controller;
 import com.aida.model.*;
 import com.aida.response.ApiResponse;
 import com.aida.response.PaymentLinkResponse;
-import com.aida.service.PaymentService;
-import com.aida.service.SellerReportService;
-import com.aida.service.SellerService;
-import com.aida.service.UserService;
+import com.aida.service.*;
 import com.aida.service.impl.SellerReportServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +20,7 @@ public class PaymentController {
     private final SellerService sellerService;
     private final SellerReportServiceImpl sellerReportServiceImpl;
     private final SellerReportService sellerReportService;
+    private final TransactionService transactionService;
 
     @GetMapping("/{paymentId}")
     public ResponseEntity<ApiResponse> paymentSuccessHandler(
@@ -44,6 +42,7 @@ public class PaymentController {
 
         if(paymentSuccess){
             for(Order order:paymentOrder.getOrders()){
+                transactionService.createTransaction(order);
                 Seller seller = sellerService.getSellerById(order.getSellerId());
                 SellerReport report = sellerReportService.getSellerReport(seller);
                 report.setTotalOrders(report.getTotalOrders()+1);
