@@ -66,8 +66,8 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public Coupon findCouponById(Long id) {
-        return null;
+    public Coupon findCouponById(Long id) throws Exception {
+        return couponRepository.findById(id).orElseThrow(() -> new Exception("coupon not found"));
     }
 
     @Override
