@@ -1,11 +1,13 @@
 package com.aida.controller;
 
+import com.aida.model.Cart;
+import com.aida.model.User;
 import com.aida.service.CartService;
 import com.aida.service.CouponService;
 import com.aida.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -14,4 +16,24 @@ public class AdminCouponController {
     private final CouponService couponService;
     private final UserService userService;
     private final CartService cartService;
+
+    @PostMapping("/apply")
+    public ResponseEntity<Cart> applyCoupon(
+            @RequestParam String apply,
+            @RequestParam String code,
+            @RequestParam double orderValue,
+            @RequestHeader("Authorization") String jwt
+    ) throws Exception {
+        User user = userService.findUserByJwtToken(jwt);
+        Cart cart;
+
+        if(apply.equals("true")){
+            cart = couponService.applyCoupon(code, orderValue, user);
+        }
+        else {
+            cart = couponService.removeCoupon(code, user);
+        }
+        return ResponseEntity.ok(cart);
+    }
+
 }
