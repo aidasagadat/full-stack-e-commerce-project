@@ -11,9 +11,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping
+@RequestMapping("api/coupons")
 public class AdminCouponController {
     private final CouponService couponService;
     private final UserService userService;
@@ -54,4 +56,9 @@ public class AdminCouponController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @GetMapping("/admin/all")
+    public ResponseEntity<List<Coupon>> getAllCoupons(){
+        List<Coupon> coupons = couponService.findAllCoupons();
+        return ResponseEntity.ok(coupons);
+    }
 }
